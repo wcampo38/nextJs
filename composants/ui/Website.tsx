@@ -1,4 +1,7 @@
+"use client";
+
 import { WebsiteDocument } from "@/prismicio-types";
+import { usePinsStore } from "@/store/usePinsStore";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -10,9 +13,12 @@ export default function Website({
 }: {
   website: WebsiteDocument;
 }) {
+  const { addPin, removePin, isPinned } = usePinsStore();
+  const pinned = isPinned(uid);
+
   return (
-    <Link href={`websites/${uid}`}>
-      <div className="relative">
+    <div className="relative">
+      <Link href={`websites/${uid}`}>
         {img.url && (
           <Image
             src={img.url}
@@ -23,7 +29,19 @@ export default function Website({
           />
         )}
         <h3 className="mt-4">{title}</h3>
-      </div>
-    </Link>
+      </Link>
+      <button
+        onClick={() => (pinned ? removePin(uid) : addPin(uid))}
+        aria-label={pinned ? "Retirer des pins" : "Ajouter aux pins"}
+        className="absolute top-2 right-2 flex items-center justify-center w-8 h-8 rounded-full bg-white/80 hover:bg-white transition"
+      >
+        <span
+          className="material-symbols-outlined"
+          style={{ fontVariationSettings: pinned ? "'FILL' 1" : "'FILL' 0" }}
+        >
+          keep
+        </span>
+      </button>
+    </div>
   );
 }

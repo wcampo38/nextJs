@@ -1,8 +1,11 @@
 "use client";
 import Link from "next/link";
 import Logo from "../ui/Logo";
+import { usePinsStore } from "@/store/usePinsStore";
 
 export default function Header() {
+  const pinsCount = usePinsStore((state) => state.pinnedUids.length);
+
   return (
     <header className="flex items-center gap-5 py-8 px-6">
       <Logo />
@@ -32,7 +35,7 @@ export default function Header() {
           </li>
           <li>
             <Link href="/pins" className="flex items-center">
-              13
+              {pinsCount > 0 && pinsCount}
               <span className="material-symbols-outlined">keep</span>
             </Link>
           </li>
